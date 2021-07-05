@@ -6,7 +6,7 @@ export default class Header extends React.Component{
         return(
             <header className='header'>
                 <h1>{this.props.title}</h1>
-                <Button color='green' text='Add'/>
+                <Button color='green' text='Add' onClick={this.props.showAddTask}/>
             </header>
         )
     }

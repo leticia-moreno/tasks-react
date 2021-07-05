@@ -4,7 +4,7 @@ import Header from './components/Header';
 import AddTaskForm from './components/AddTaskForm';
 
 export default class App extends React.Component{
-state ={
+  state ={
     tasks: [
       {
         id: '1',
@@ -22,9 +22,8 @@ state ={
         completed : false
       }
     ],
-    showAddTask:true
+    showAddTask:false
   }
-
   markComplete = (id)=>{
     this.setState({tasks: this.state.tasks.map(task =>{
       if(task.id === id){
@@ -33,12 +32,10 @@ state ={
       return task
     }) })
   }
-
   deleteTask = (id) =>{
     this.setState({tasks : this.state.tasks.filter(task =>{return (task.id !== id) ? task : null})
   })
   }
-
   saveTask = (task)=>{
     let newTask = {
       id: 66,
@@ -47,13 +44,15 @@ state ={
     }
     this.setState({tasks: [...this.state.tasks, {...newTask}]});
   }
-
+  showAddTask = ()=>{
+    this.setState({...this.state.tasks, showAddTask: !this.state.showAddTask});
+  }
   render(){
     return(
       <div className="container">
-        <Header title="Task Tracker"/>
+        <Header title="Task Tracker" showAddTask={this.showAddTask}/>
         {this.state.showAddTask && <AddTaskForm saveTask={this.saveTask}/>}
-        <Tasks state={this.state.tasks} markComplete={this.markComplete} delete={this.deleteTask}/>
+        {this.state.tasks.length > 0 ? <Tasks state={this.state.tasks} markComplete={this.markComplete} delete={this.deleteTask}/> : 'No tasks to show'}
       </div>
     )
   }
