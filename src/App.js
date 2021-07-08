@@ -2,6 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Tasks from './components/Tasks';
 import Header from './components/Header';
+import Button from './components/Button';
 import AddTaskForm from './components/AddTaskForm';
 import About from './components/pages/About';
 
@@ -18,14 +19,13 @@ export default class App extends React.Component{
     }
     getTasks();
   }
-
-  markComplete = (id)=>{
+  markComplete = async (id)=>{
     const fetchTaskToUpdate = async(id)=>{
       const resp = await fetch(`http://localhost:5000/tasks/${id}`)
       const data = await resp.json()
       return data
     }
-    const taskToUpdate = fetchTaskToUpdate(id);
+    const taskToUpdate = await fetchTaskToUpdate(id);
     const updatedTask = {...taskToUpdate, completed: !taskToUpdate.completed}
     const updateTask = async(id) =>{
       await fetch(`http://localhost:5000/tasks/${id}`,{
@@ -44,7 +44,6 @@ export default class App extends React.Component{
     }
     updateTask(id);
   }
-
   deleteTask = (id) =>{
     const del = async (id)=>{
       await fetch(`http://localhost:5000/tasks/${id}`, {
@@ -79,9 +78,10 @@ export default class App extends React.Component{
     return(
       <Router>
         <div className="container">
-          <Header title="Task Tracker" showAddTask={this.showAddTask} isFormOpen={this.state.showAddTask}/>
+          <Header title="Task Tracker" showAddTask={this.showAddTask}/>
           <Route exact path='/' render={props =>(
             <React.Fragment>
+              <Button color={this.state.showAddTask ? 'red' : 'green'} text={this.state.showAddTask ? 'Close' : 'Add'} onClick={this.showAddTask} classes="btn btn-block"/>
               {this.state.showAddTask && <AddTaskForm saveTask={this.saveTask}/>}
               {this.state.tasks.length > 0 ? <Tasks state={this.state.tasks} markComplete={this.markComplete} delete={this.deleteTask}/> : 'No tasks to show'}
             </React.Fragment>

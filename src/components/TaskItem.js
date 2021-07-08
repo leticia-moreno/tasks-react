@@ -5,7 +5,7 @@ export default class TaskItem extends React.Component{
     const { id } = this.props.task
       return(
     <div className={`task ${this.props.task.completed ? 'reminder' : ''}`} onDoubleClick={this.props.markComplete.bind(this, id)}>
-        <h3>{this.props.task.title} <Button color='red' text='X' onClick={this.props.delete.bind(this, id)} /></h3>
+        <h3>{this.props.task.title} <Button color='red' text='X' onClick={this.props.delete.bind(this, id)} classes="btn"/></h3>
     </div>
     )
   }
